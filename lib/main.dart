@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './transaction.dart';
+import '../widgets/user_transactions.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,21 +14,18 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  final List<Transaction> transactions = [
-    Transaction(
-        id: 't1', title: 'New Pants', amount: 20.99, date: DateTime.now()),
-    Transaction(
-        id: 't2', title: 'New Shoes', amount: 15.99, date: DateTime.now())
-  ];
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text('Flutter App'),
+          backgroundColor: Colors.blue,
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
@@ -38,35 +35,7 @@ class MyHomePage extends StatelessWidget {
                 color: Colors.blue,
               ),
             ),
-            Column(
-              children: transactions.map((transaction) {
-                return Card(
-                  child: Row(
-                    children: [
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                        decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: Colors.blue)),
-                        padding: EdgeInsets.all(10),
-                        child: Text(transaction.amount.toString()),
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            transaction.title,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue),
-                          ),
-                          Text(transaction.date.toString()),
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              }).toList(),
-            )
+            UserTransactions(), 
           ],
         ));
   }
