@@ -5,6 +5,7 @@ import 'package:flutter_complete_guide/widgets/chart.dart';
 import 'package:flutter_complete_guide/widgets/new_transaction.dart';
 import 'package:flutter_complete_guide/widgets/transaction_list.dart';
 import 'models/transaction.dart';
+import 'widgets/personal_expenses_app_config.dart';
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -17,18 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Personal Expenses',
-      home: const MyHomePage(),
-      theme: ThemeData(
-          primarySwatch: Colors.amber,
-          fontFamily: 'Quicksand',
-          appBarTheme: const AppBarTheme(
-              titleTextStyle: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold))),
-    );
+    return const PersonalExpensesAppConfig();
   }
 }
 
@@ -40,12 +30,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [
-    // Transaction(
-    //     id: 't1', title: 'New Pants', amount: 20.99, date: DateTime.now()),
-    // Transaction(
-    //     id: 't2', title: 'New Shoes', amount: 15.99, date: DateTime.now())
-  ];
+  final List<Transaction> _userTransactions = [];
 
   bool _showChart = false;
 
