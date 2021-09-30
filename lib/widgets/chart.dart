@@ -23,10 +23,7 @@ class Chart extends StatelessWidget {
         }
       }
 
-      return {
-        'day': DateFormat.E().format(weekDay),
-        'amount': totalSum
-      };
+      return {'day': DateFormat.E().format(weekDay), 'amount': totalSum};
     }).reversed.toList();
   }
 
@@ -37,25 +34,30 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 15,
-      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: groupedTransactionValues.map((data) {
-            return Flexible(
-              fit: FlexFit.tight,
-                child: ChartBar(
-                    data['day'],
-                    data['amount'],
-                    totalSpending == 0.0
-                        ? 0.0
-                        : (data['amount'] as double) / totalSpending));
-          }).toList(),
+    return LayoutBuilder(builder: (context, constaint) {
+      return Card(
+        elevation: 15,
+        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: constaint.maxWidth * 0.03,
+            vertical: constaint.maxHeight * 0.1,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: groupedTransactionValues.map((data) {
+              return Flexible(
+                  fit: FlexFit.tight,
+                  child: ChartBar(
+                      data['day'],
+                      data['amount'],
+                      totalSpending == 0.0
+                          ? 0.0
+                          : (data['amount'] as double) / totalSpending));
+            }).toList(),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
