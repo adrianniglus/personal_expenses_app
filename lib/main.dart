@@ -79,18 +79,71 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final isLandscape = mediaQuery.orientation == Orientation.landscape;
-    final PreferredSizeWidget appBar = Platform.isAndroid
+  List<Widget> _buildLandscapeContent(MediaQueryData mediaQuery,
+      PreferredSizeWidget appBar, Widget txListWidget) {
+    return [
+      Container(
+        height: (mediaQuery.size.height -
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
+            0.05,
+        margin: EdgeInsets.symmetric(
+          vertical: (mediaQuery.size.height -
+                  appBar.preferredSize.height -
+                  mediaQuery.padding.top) *
+              0.05,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              'Show Chart',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            CupertinoSwitch(
+                activeColor: Theme.of(context).primaryColor,
+                value: _showChart,
+                onChanged: (val) {
+                  setState(() {
+                    _showChart = val;
+                  });
+                })
+          ],
+        ),
+      ),
+      _showChart
+          ? SizedBox(
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+              child: Chart(_recentTransactions))
+          : txListWidget,
+    ];
+  }
+
+  List<Widget> _buildPortraitContent(MediaQueryData mediaQuery,
+      PreferredSizeWidget appBar, Widget txListWidget) {
+    return [
+      SizedBox(
+          height: (mediaQuery.size.height -
+                  appBar.preferredSize.height -
+                  mediaQuery.padding.top) *
+              0.3,
+          child: Chart(_recentTransactions)),
+      txListWidget
+    ];
+  }
+
+  Widget _buildAdaptiveAppBar(BuildContext context) {
+    return Platform.isAndroid
         ? CupertinoNavigationBar(
-            middle: Text('Personal Expenses'),
+            middle: const Text('Personal Expenses'),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
-                  child: Icon(CupertinoIcons.add),
+                  child: const Icon(CupertinoIcons.add),
                   onTap: () => _startAddNewTransaction(context),
                 )
               ],
@@ -106,8 +159,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.add))
             ],
           );
+  }
 
-    final txListWidget = Container(
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
+    final PreferredSizeWidget appBar = _buildAdaptiveAppBar(context);
+
+    final txListWidget = SizedBox(
         height: (mediaQuery.size.height -
                 appBar.preferredSize.height -
                 mediaQuery.padding.top) *
@@ -120,52 +180,9 @@ class _MyHomePageState extends State<MyHomePage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (isLandscape)
-          Container(
-            height: (mediaQuery.size.height -
-                    appBar.preferredSize.height -
-                    mediaQuery.padding.top) *
-                0.05,
-            margin: EdgeInsets.symmetric(
-              vertical: (mediaQuery.size.height -
-                      appBar.preferredSize.height -
-                      mediaQuery.padding.top) *
-                  0.05,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Show Chart',
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-                CupertinoSwitch(
-                    activeColor: Theme.of(context).primaryColor,
-                    value: _showChart,
-                    onChanged: (val) {
-                      setState(() {
-                        _showChart = val;
-                      });
-                    })
-              ],
-            ),
-          ),
+          ..._buildLandscapeContent(mediaQuery, appBar, txListWidget),
         if (!isLandscape)
-          Container(
-              height: (mediaQuery.size.height -
-                      appBar.preferredSize.height -
-                      mediaQuery.padding.top) *
-                  0.3,
-              child: Chart(_recentTransactions)),
-        if (!isLandscape) txListWidget,
-        if (isLandscape)
-          _showChart
-              ? Container(
-                  height: (mediaQuery.size.height -
-                          appBar.preferredSize.height -
-                          mediaQuery.padding.top) *
-                      0.7,
-                  child: Chart(_recentTransactions))
-              : txListWidget,
+          ..._buildPortraitContent(mediaQuery, appBar, txListWidget),
       ],
     ));
 

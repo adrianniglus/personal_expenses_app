@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
 
-  Chart(this.recentTransactions);
+  const Chart(this.recentTransactions);
 
   List<Map<String, Object>> get groupedTransactionValues {
     return List.generate(7, (index) {
@@ -37,7 +37,7 @@ class Chart extends StatelessWidget {
     return LayoutBuilder(builder: (context, constaint) {
       return Card(
         elevation: 15,
-        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Container(
           padding: EdgeInsets.symmetric(
             horizontal: constaint.maxWidth * 0.03,

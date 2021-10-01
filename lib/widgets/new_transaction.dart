@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 class NewTransaction extends StatefulWidget {
   final Function addTransaction;
 
-  NewTransaction(
+  const NewTransaction(
     this.addTransaction,
   );
 
@@ -74,12 +74,12 @@ class _NewTransactionState extends State<NewTransaction> {
                 onSubmitted: (_) => _submitData(_selectedDate),
               ),
               TextField(
-                decoration: InputDecoration(labelText: 'Amount'),
+                decoration: const InputDecoration(labelText: 'Amount'),
                 controller: _amountController,
                 keyboardType: TextInputType.number,
                 onSubmitted: (_) => _submitData(_selectedDate),
               ),
-              Container(
+              SizedBox(
                 height: 70,
                 child: Row(
                   children: [
@@ -89,7 +89,7 @@ class _NewTransactionState extends State<NewTransaction> {
                             : 'Picked date: ${DateFormat.yMd().format(_selectedDate)}')),
                     TextButton(
                         onPressed: _presentDatePicker,
-                        child: Text(
+                        child: const Text(
                           'Choose Date',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ))
@@ -100,7 +100,7 @@ class _NewTransactionState extends State<NewTransaction> {
                   onPressed: _isButtonDisabled
                       ? null
                       : () => _submitData(_selectedDate),
-                  child: Text(
+                  child: const Text(
                     'Add Transaction',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ))
